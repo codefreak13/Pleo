@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, SectionList, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {ExpenseListItem} from '../list-items';
-import {BoldText} from '../../components/text';
+import ExpenseListItem from '../list-items/ExpenseListItem';
+import {BoldText} from '..';
 import {ExpenseDataProps} from '../../screens/expenses/List';
 import {formatData} from '../../utils';
 
@@ -13,9 +13,10 @@ type ExpenseListViewProps = {
 
 const ExpenseListView = (props: ExpenseListViewProps) => {
   const {expenses, onPress} = props;
-
+  const {titleContainerStyle, listStyle} = styles;
   return (
     <SectionList
+      style={listStyle}
       //   keyExtractor={item => item.indexOf(item).toString()}
       showsVerticalScrollIndicator={false}
       sections={formatData(expenses)}
@@ -32,16 +33,24 @@ const ExpenseListView = (props: ExpenseListViewProps) => {
           // onPress={() => onPress(item)}
         />
       )}
-      renderSectionHeader={({section: {title}}) => <BoldText>{title}</BoldText>}
+      renderSectionHeader={({section: {title}}) => (
+        <View style={titleContainerStyle}>
+          <BoldText>{title}</BoldText>
+        </View>
+      )}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  imageStyle: {
-    width: RFValue(100),
-    height: RFValue(100),
-    borderRadius: RFValue(50),
+  listStyle: {
+    flex: 1,
+    width: '100%',
+  },
+  titleContainerStyle: {
+    alignItems: 'flex-start',
+    marginHorizontal: RFValue(10),
+    marginTop: RFValue(20),
   },
 });
 

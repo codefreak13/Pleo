@@ -11,9 +11,11 @@ const MediumText = (Props: TextProps) => {
   const {children, customstyle, ...rest} = Props;
 
   return (
-    <Text style={[styles.text, customstyle]} {...rest}>
-      {children}
-    </Text>
+    <>
+      <Text style={[styles.text, customstyle]} {...rest}>
+        {children}
+      </Text>
+    </>
   );
 };
 

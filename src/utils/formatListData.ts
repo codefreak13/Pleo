@@ -1,14 +1,15 @@
+import {dateA} from './formatDate';
+
 export const formatData = (data: any) =>
   data.reduce((accum: any, current: any) => {
     const foundIndex = accum.findIndex(
-      (element: any) =>
-        element.title === new Date(current.date).toLocaleDateString('en'),
+      (element: any) => element.title === dateA(current.date),
     );
     if (foundIndex === -1) {
       return [
         ...accum,
         {
-          title: new Date(current.date).toLocaleDateString('en'),
+          title: dateA(current.date),
           data: [
             {
               amount: current.amount,
@@ -31,7 +32,7 @@ export const formatData = (data: any) =>
         user: current.user,
       },
     ];
-    return accum.sort((a: {title: number}, b: {title: number}) =>
-      a.title > b.title ? 1 : b.title > a.title ? -1 : 0,
+    return accum.sort(
+      (a: {title: number}, b: {title: number}) => b.title - a.title,
     );
   }, []);

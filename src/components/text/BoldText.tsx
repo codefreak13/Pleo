@@ -22,6 +22,7 @@ export default BoldText;
 const styles = StyleSheet.create({
   text: {
     fontFamily: 'Roboto-Bold',
-    fontSize: RFValue(14),
+    fontSize: RFValue(16),
+    fontWeight: '600',
   },
 });

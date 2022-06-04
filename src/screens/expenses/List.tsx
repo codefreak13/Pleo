@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import api from '../../api';
-import {BoldText, MediumText, RegularText} from '../../components/text';
-import {ExpenseListView} from '../../components/list-views';
+import {BoldText, MediumText, RegularText} from '../../components';
+import {ExpenseListView} from '../../components';
 import {RootNavigationProp} from '../../navigation/RootTypes';
 
 export type ExpenseDataProps = {
@@ -25,13 +25,12 @@ export type ExpenseDataProps = {
 
 const ExpenseList = () => {
   //   const {navigate} = navigation;
-  const {imageStyle, mainStyle} = styles;
+  const {mainStyle} = styles;
 
   const [data, setdata] = useState<Array<ExpenseDataProps>>([]);
   const [loading, setloading] = useState<boolean>(true);
 
   const getExpenses = async () => {
-    console.log('abab');
     try {
       const data = await api.getExpenses();
       console.log(data.expenses[0]);
@@ -63,12 +62,8 @@ const ExpenseList = () => {
 const styles = StyleSheet.create({
   mainStyle: {
     flex: 1,
-    marginTop: RFValue(50),
-  },
-  imageStyle: {
-    width: RFValue(100),
-    height: RFValue(100),
-    borderRadius: RFValue(50),
+    marginTop: RFValue(20),
+    alignItems: 'center',
   },
 });
 
