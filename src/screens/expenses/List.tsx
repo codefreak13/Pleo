@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import api from '../../api';
-import {BoldText, MediumText, RegularText} from '../../components';
+import {BoldText} from '../../components';
 import {ExpenseListView} from '../../components';
 import {RootNavigationProp} from '../../navigation/RootTypes';
 
@@ -23,8 +23,8 @@ export type ExpenseDataProps = {
   receipt: Array<string>;
 };
 
-const ExpenseList = () => {
-  //   const {navigate} = navigation;
+const ExpenseList = ({navigation}: RootNavigationProp) => {
+  const {navigate} = navigation;
   const {mainStyle} = styles;
 
   const [data, setdata] = useState<Array<ExpenseDataProps>>([]);
@@ -51,9 +51,9 @@ const ExpenseList = () => {
       <BoldText>PLEO EXPENSE TRACKER</BoldText>
       <ExpenseListView
         expenses={data}
-        //   onPress={(item, itemIndex) => {
-        //     navigate('SubWalletDetails', { item, itemIndex })
-        //   }}
+        onPress={item => {
+          navigate('DETAIL', {item});
+        }}
       />
     </View>
   );

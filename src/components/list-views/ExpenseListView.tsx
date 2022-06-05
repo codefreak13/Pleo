@@ -8,30 +8,25 @@ import {formatData} from '../../utils';
 
 type ExpenseListViewProps = {
   expenses: ExpenseDataProps[];
-  onPress?: (item: any) => void;
+  onPress: (item: ExpenseDataProps) => void;
 };
 
 const ExpenseListView = (props: ExpenseListViewProps) => {
   const {expenses, onPress} = props;
-  const {titleContainerStyle, listStyle} = styles;
+  const {titleContainerStyle, emptyListStyle, listStyle} = styles;
   return (
     <SectionList
       style={listStyle}
-      //   keyExtractor={item => item.indexOf(item).toString()}
+      keyExtractor={(item, index) => item + index}
       showsVerticalScrollIndicator={false}
       sections={formatData(expenses)}
-      // ListEmptyComponent={
-      //   <View style={styles.emptyList}>
-      //     <Text style={styles.emptyListText}>
-      //       You have not made any{'\n'}transaction with this card yet.
-      //     </Text>
-      //   </View>
-      // }
+      ListEmptyComponent={
+        <View style={emptyListStyle}>
+          <BoldText>No Expenses</BoldText>
+        </View>
+      }
       renderItem={({item}) => (
-        <ExpenseListItem
-          {...item}
-          // onPress={() => onPress(item)}
-        />
+        <ExpenseListItem {...item} onPress={() => onPress(item)} />
       )}
       renderSectionHeader={({section: {title}}) => (
         <View style={titleContainerStyle}>
@@ -51,6 +46,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginHorizontal: RFValue(10),
     marginTop: RFValue(20),
+  },
+  emptyListStyle: {
+    alignItems: 'center',
+    marginTop: RFValue(200),
   },
 });
 

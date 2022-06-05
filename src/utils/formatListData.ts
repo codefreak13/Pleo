@@ -16,6 +16,7 @@ export const formatData = (data: any) =>
               merchant: current.merchant,
               date: current.date,
               receipts: current.receipts,
+              comment: current.comment,
               user: current.user,
             },
           ],
@@ -29,6 +30,7 @@ export const formatData = (data: any) =>
         merchant: current.merchant,
         date: current.date,
         receipts: current.receipts,
+        comment: current.comment,
         user: current.user,
       },
     ];

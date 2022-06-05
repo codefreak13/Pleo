@@ -18,3 +18,6 @@ export {default as Button} from './Button';
 
 //Upload
 export {default as UploadImage} from './UploadImage';
+
+//Loading
+export {default as LoadingIcon} from './LoadingIcon';

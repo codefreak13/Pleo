@@ -25,7 +25,7 @@ const UploadImage = (Props: UploadProps) => {
         source={image}
         resizeMode={FastImage.resizeMode.cover}
       />
-      <BoldText customstyle={textStyle}>Upload Receipt</BoldText>
+      <BoldText customstyle={textStyle}>Click to upload Receipt</BoldText>
     </Pressable>
   );
 };
@@ -34,8 +34,7 @@ export default UploadImage;
 
 const styles = StyleSheet.create({
   mainStyle: {
-    flex: 1,
-    borderStyle: 'dotted',
+    borderStyle: 'dashed',
     borderWidth: 1,
     borderRadius: RFValue(1.5),
     marginTop: RFValue(20),

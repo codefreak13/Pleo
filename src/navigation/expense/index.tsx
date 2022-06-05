@@ -9,8 +9,8 @@ const Stack = createNativeStackNavigator<ExpenseStackParamList>();
 const OnboardingStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name={EXPENSE_ROUTES.DETAIL} component={Details} />
       <Stack.Screen name={EXPENSE_ROUTES.LIST} component={List} />
+      <Stack.Screen name={EXPENSE_ROUTES.DETAIL} component={Details} />
     </Stack.Navigator>
   );
 };

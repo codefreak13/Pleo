@@ -1,4 +1,5 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import type {RouteProp} from '@react-navigation/native';
 
 /// We use enums to prevent the use of strings across the application - i.e, write once
 export const enum ROOT_ROUTES {
@@ -12,6 +13,11 @@ export type RootStackParamList = {
 
 /// This is used by components so that they can access navigation functions
 export type RootNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  ROOT_ROUTES.EXPENSE
+>;
+
+export type RootNavigationRouteProp = RouteProp<
   RootStackParamList,
   ROOT_ROUTES.EXPENSE
 >;

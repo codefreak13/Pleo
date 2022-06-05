@@ -1,37 +1,34 @@
 import React, {useEffect, useState} from 'react';
-import {View, ScrollView, StyleSheet, TextInput} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {
-  BoldText,
   SectionText,
   Input,
   Button,
   MediumText,
   UploadImage,
 } from '../../components';
-import {RootNavigationProp} from '../../navigation/RootTypes';
-import FastImage from 'react-native-fast-image';
 import {COLORS} from '../../styles';
+import {ExpenseDataProps} from './List';
+import {formatDate} from '../../utils';
+import {RootNavigationRouteProp} from '../../navigation/RootTypes';
 
-export type ExpenseDataProps = {
-  id: string;
-  user: {
-    first: string;
-    last: string;
-    email: string;
-  };
-  amount: {
-    currency: string;
-    value: string;
-  };
-  comment: string;
-  date: string;
-  merchant: string;
-  receipt: Array<string>;
-};
-
-const ExpenseDetail = () => {
+const ExpenseDetail = (props: RootNavigationRouteProp) => {
+  const {
+    route: {
+      params: {
+        item: {
+          amount: {currency, value},
+          merchant,
+          receipt,
+          date,
+          user: {first, last, email},
+          comment,
+        },
+      },
+    },
+  } = props;
   const {
     mainStyle,
     imageStyle,
@@ -40,46 +37,45 @@ const ExpenseDetail = () => {
     inputStyle,
     buttonTextStyle,
   } = styles;
-  const receipt = '';
+
   const [text, settext] = useState<string>('');
   const emptyImage = require('../../../assets/images/upload.png');
   const image = receipt ? {uri: receipt} : emptyImage;
 
-  //   const attachRequestImage = () => {
-  //   toggleAttachMentModal()
-  //     const options = {
-  //       mediaType: 'photo',
-  //       selectionLimit: 1
-  //     }
+  const attachRequestImage = async () => {
+    const options = {
+      mediaType: 'photo',
+      selectionLimit: 1,
+    };
 
-  //     setTimeout(async () => {
-  //       try {
-  //         const res = await launchImageLibrary(options)
-  //         this.setState({ imageLoading: true })
+    try {
+      const res = await launchImageLibrary(options);
+      // setState({ imageLoading: true })
 
-  //         const image = {
-  //           uri: res.assets[0].uri,
-  //           type: res.assets[0].type
-  //         }
+      const image = {
+        uri: res?.assets[0]?.uri,
+        type: res?.assets[0]?.type,
+      };
+      console.log(image, 'image');
+      //   const upload = await S3Upload(image)
+      //   this.setState({ attachment: image })
+      //   this.setState({ imageLoading: false })
+      //   setFieldValue('image', upload)
+      //   return upload
+    } catch (err) {
+      console.log(err);
+      //   this.setState({ imageLoading: false })
+      //   alert('You have not selected any file')
+    }
+  };
 
-  //         const upload = await S3Upload(image)
-  //         this.setState({ attachment: image })
-  //         this.setState({ imageLoading: false })
-  //         setFieldValue('image', upload)
-  //         return upload
-  //       } catch (err) {
-  //         this.setState({ imageLoading: false })
-  //         alert('You have not selected any file')
-  //       }
-  //     }, 1000)
-  //   }
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={mainStyle}>
-      <SectionText title="Merchant">ddhdhhdh</SectionText>
-      <SectionText title="Employee Name">ddhdhhdh</SectionText>
-      <SectionText title="Employee Email">ddhdhhdh</SectionText>
-      <SectionText title="Date">ddhdhhdh</SectionText>
-      <SectionText title="Amount">ddhdhhdh</SectionText>
+      <SectionText title="Merchant">{merchant}</SectionText>
+      <SectionText title="Employee Name">{`${first} ${last}`}</SectionText>
+      <SectionText title="Employee Email">{email}</SectionText>
+      <SectionText title="Date">{formatDate.dateB(date)}</SectionText>
+      <SectionText title="Amount">{`${value} ${currency}`}</SectionText>
 
       <Input
         value={text}
@@ -93,7 +89,12 @@ const ExpenseDetail = () => {
         </Button>
       </Input>
 
-      <UploadImage receipt="" onPress={() => {}} />
+      <UploadImage
+        receipt=""
+        onPress={() => {
+          attachRequestImage();
+        }}
+      />
     </ScrollView>
   );
 };
