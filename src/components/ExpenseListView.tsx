@@ -1,14 +1,15 @@
 import React from 'react';
 import {View, SectionList, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
-import ExpenseListItem from '../list-items/ExpenseListItem';
-import {BoldText} from '..';
-import {ExpenseDataProps} from '../../screens/expenses/List';
-import {formatData} from '../../utils';
+import ExpenseListItem from './ExpenseListItem';
+import {BoldText} from '.';
+import {ExpenseDataProps} from '../screens/expenses/List';
+import {formatData} from '../utils';
 
 type ExpenseListViewProps = {
   expenses: ExpenseDataProps[];
   onPress: (item: ExpenseDataProps) => void;
+  loadMore: () => void;
 };
 
 const ExpenseListView = (props: ExpenseListViewProps) => {
@@ -17,7 +18,7 @@ const ExpenseListView = (props: ExpenseListViewProps) => {
   return (
     <SectionList
       style={listStyle}
-      keyExtractor={(item, index) => item + index}
+      keyExtractor={(item, index) => item.date + index}
       showsVerticalScrollIndicator={false}
       sections={formatData(expenses)}
       ListEmptyComponent={
@@ -33,6 +34,8 @@ const ExpenseListView = (props: ExpenseListViewProps) => {
           <BoldText>{title}</BoldText>
         </View>
       )}
+      onEndReachedThreshold={0.4}
+      onEndReached={() => props.loadMore()}
     />
   );
 };

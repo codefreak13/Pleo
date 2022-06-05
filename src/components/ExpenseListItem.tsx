@@ -2,44 +2,34 @@ import React from 'react';
 import {View, Pressable, StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {BoldText, MediumText, RegularText} from '..';
-import {ExpenseDataProps} from '../../screens/expenses/List';
-import {COLORS} from '../../styles';
-import {formatDate} from '../../utils';
+import BoldText from './text/BoldText';
+import MediumText from './text/MediumText';
+import RegularText from './text/RegularText';
+import {ExpenseDataProps} from '../screens/expenses/List';
+import {COLORS} from '../styles';
+import {formatDate} from '../utils';
 
 type ExpenseListItemProps = {
   onPress: () => void;
 } & ExpenseDataProps;
 
 const ExpenseListItem = (props: ExpenseListItemProps) => {
+  console.log('pspsp');
   const {
     amount: {currency, value},
     merchant,
-    receipt,
+    receipts,
     date,
     user: {first, last},
     onPress,
   } = props;
 
-  const {
-    imageStyle,
-    mainStyle,
-    detailContainerStyle,
-    detailViewStyle,
-    merchantStyle,
-  } = styles;
-
-  const emptyImage = require('../../../assets/images/empty.jpeg');
-  const image = receipt ? {uri: receipt} : emptyImage;
+  const {mainStyle, detailContainerStyle, detailViewStyle, merchantStyle} =
+    styles;
 
   return (
     <Pressable style={mainStyle} onPress={() => onPress()}>
       <View style={detailContainerStyle}>
-        <FastImage
-          style={imageStyle}
-          source={image}
-          resizeMode={FastImage.resizeMode.cover}
-        />
         <View style={detailViewStyle}>
           <BoldText customstyle={merchantStyle}>{merchant}</BoldText>
           <MediumText>{`${first} ${last}`}</MediumText>
@@ -62,11 +52,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.Grey,
     padding: RFValue(13),
     elevation: 5,
-  },
-  imageStyle: {
-    width: RFValue(50),
-    height: RFValue(50),
-    borderRadius: RFValue(50),
   },
   detailContainerStyle: {
     flexDirection: 'row',

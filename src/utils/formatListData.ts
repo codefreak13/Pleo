@@ -1,40 +1,20 @@
+import {Expense} from '../../api/data/expenses';
 import {dateA} from './formatDate';
 
-export const formatData = (data: any) =>
-  data.reduce((accum: any, current: any) => {
-    const foundIndex = accum.findIndex(
-      (element: any) => element.title === dateA(current.date),
-    );
-    if (foundIndex === -1) {
-      return [
-        ...accum,
-        {
-          title: dateA(current.date),
-          data: [
-            {
-              amount: current.amount,
-              merchant: current.merchant,
-              date: current.date,
-              receipts: current.receipts,
-              comment: current.comment,
-              user: current.user,
-            },
-          ],
-        },
-      ];
-    }
-    accum[foundIndex].data = [
-      ...accum[foundIndex].data,
-      {
-        amount: current.amount,
-        merchant: current.merchant,
-        date: current.date,
-        receipts: current.receipts,
-        comment: current.comment,
-        user: current.user,
-      },
-    ];
-    return accum.sort(
-      (a: {title: number}, b: {title: number}) => b.title - a.title,
-    );
-  }, []);
+export const formatData = (data: Expense[]) => {
+  const dataMap = data.reduce((accum, current) => {
+    const date = dateA(current.date);
+    return {...accum, [date]: (accum[date] || []).concat(current)};
+  }, {} as {[x in string]: Expense[]});
+
+  const sortedDate = Object.keys(dataMap).sort((a, b) =>
+    new Date(a) < new Date(b) ? -1 : 1,
+  );
+
+  return sortedDate.map(dateString => {
+    return {
+      title: dateString,
+      data: dataMap[dateString],
+    };
+  });
+};

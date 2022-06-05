@@ -5,10 +5,10 @@ export {default as MediumText} from './text/MediumText';
 export {default as SectionText} from './text/SectionText';
 
 //list-item
-export {default as ExpenseListItem} from './list-items/ExpenseListItem';
+export {default as ExpenseListItem} from './ExpenseListItem';
 
 //list-view
-export {default as ExpenseListView} from './list-views/ExpenseListView';
+export {default as ExpenseListView} from './ExpenseListView';
 
 //input
 export {default as Input} from './Input';
@@ -21,3 +21,6 @@ export {default as UploadImage} from './UploadImage';
 
 //Loading
 export {default as LoadingIcon} from './LoadingIcon';
+
+//Header
+export {default as Header} from './Header';

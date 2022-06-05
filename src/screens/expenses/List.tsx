@@ -1,59 +1,42 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
-import api from '../../api';
 import {BoldText} from '../../components';
 import {ExpenseListView} from '../../components';
-import {RootNavigationProp} from '../../navigation/RootTypes';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  ExpenseStackParamList,
+  EXPENSE_ROUTES,
+} from '../../navigation/expense/types';
+import {Expense} from '../../../api/data/expenses';
+import useExpenses from '../../hooks/useExpeses';
 
-export type ExpenseDataProps = {
-  id: string;
-  user: {
-    first: string;
-    last: string;
-    email: string;
-  };
-  amount: {
-    currency: string;
-    value: string;
-  };
-  comment: string;
-  date: string;
-  merchant: string;
-  receipt: Array<string>;
-};
+export type ExpenseDataProps = Expense;
 
-const ExpenseList = ({navigation}: RootNavigationProp) => {
-  const {navigate} = navigation;
+// const useExpenseDetailActions = (expenseID: string) => {
+//     const [expenseId, setExpenseID] = useState(expenseID)
+//     const data = useSelector((state: any) => state.expenses.find((exp: any) => exp.id === expenseID));
+//     const [expenseDetail, setExpense] = useState< Expense | null>(null);
+// const data = useSelector((state: any) =>
+// state.expenses.find((exp: any) => exp.id === expenseID),
+// );
+// const [expenseDetail, setExpense] = useState<Expense | null>(null);
+//     return { expenseDetails }
+// }
+
+const ExpenseList = () => {
   const {mainStyle} = styles;
-
-  const [data, setdata] = useState<Array<ExpenseDataProps>>([]);
-  const [loading, setloading] = useState<boolean>(true);
-
-  const getExpenses = async () => {
-    try {
-      const data = await api.getExpenses();
-      console.log(data.expenses[0]);
-      setdata(data.expenses);
-      setloading(true);
-    } catch (err) {
-      console.log(err);
-      setloading(true);
-    }
-  };
-
-  useEffect(() => {
-    getExpenses();
-  }, []);
-
+  const {navigate} = useNavigation<NavigationProp<ExpenseStackParamList>>();
+  const {expenses, loading, error, getMore} = useExpenses();
   return (
     <View style={mainStyle}>
       <BoldText>PLEO EXPENSE TRACKER</BoldText>
       <ExpenseListView
-        expenses={data}
+        expenses={expenses}
         onPress={item => {
-          navigate('DETAIL', {item});
+          navigate(EXPENSE_ROUTES.DETAIL, item);
         }}
+        loadMore={getMore}
       />
     </View>
   );

@@ -19,6 +19,22 @@ const RegularText = (Props: TextProps) => {
 
 export default RegularText;
 
+const textStyle = (style: {
+  fontFamily: string;
+  fontSize: number;
+  fontWeight: any;
+}) => {
+  const styles = StyleSheet.create({
+    text: {
+      fontSize: style.fontSize,
+      fontFamily: style.fontFamily,
+      fontWeight: style.fontWeight,
+    },
+  });
+
+  return styles;
+};
+
 const styles = StyleSheet.create({
   text: {
     fontSize: RFValue(12),

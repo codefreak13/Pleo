@@ -1,14 +1,17 @@
 import React from 'react';
 import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
-import {COLORS} from './styles';
 import RootNavigator from './navigation/RootNavigator';
+import {Provider} from 'react-redux';
+import {store} from './store/store';
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.backgroundStyle}>
-      <StatusBar barStyle={'light-content'} />
-      <RootNavigator />
-    </SafeAreaView>
+    <Provider store={store}>
+      <SafeAreaView style={styles.backgroundStyle}>
+        <StatusBar barStyle={'light-content'} />
+        <RootNavigator />
+      </SafeAreaView>
+    </Provider>
   );
 };
 
