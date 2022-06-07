@@ -1,7 +1,6 @@
 //texts
-export {default as BoldText} from './text/BoldText';
-export {default as RegularText} from './text/RegularText';
-export {default as MediumText} from './text/MediumText';
+import {RegularText, MediumText, BoldText} from './text/Text';
+export {RegularText, MediumText, BoldText};
 export {default as SectionText} from './text/SectionText';
 
 //list-item
@@ -24,3 +23,6 @@ export {default as LoadingIcon} from './LoadingIcon';
 
 //Header
 export {default as Header} from './Header';
+
+//Modal
+export {default as ReceiptModal} from './ReceiptModal';

@@ -10,19 +10,9 @@ import {
 } from '../../navigation/expense/types';
 import {Expense} from '../../../api/data/expenses';
 import useExpenses from '../../hooks/useExpeses';
+import {COLORS} from '../../styles';
 
 export type ExpenseDataProps = Expense;
-
-// const useExpenseDetailActions = (expenseID: string) => {
-//     const [expenseId, setExpenseID] = useState(expenseID)
-//     const data = useSelector((state: any) => state.expenses.find((exp: any) => exp.id === expenseID));
-//     const [expenseDetail, setExpense] = useState< Expense | null>(null);
-// const data = useSelector((state: any) =>
-// state.expenses.find((exp: any) => exp.id === expenseID),
-// );
-// const [expenseDetail, setExpense] = useState<Expense | null>(null);
-//     return { expenseDetails }
-// }
 
 const ExpenseList = () => {
   const {mainStyle} = styles;

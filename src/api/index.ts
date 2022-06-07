@@ -18,6 +18,9 @@ async function updateExpense(expenseId: string, data: {comment: string}) {
   const res = await fetch(`${BASEURL}/expenses/${expenseId}`, {
     method: 'POST',
     body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   return await res.json();
 }
@@ -31,9 +34,12 @@ export async function addCommentToExpense(expenseId: string, comment: string) {
  @data is a base64 encoded
  * */
 export async function addReceiptToExpense(expenseId: string, data: any) {
+  const formData = new FormData();
+  formData.append('receipt', data);
+
   const res = await fetch(`${BASEURL}/expenses/${expenseId}/receipts`, {
     method: 'POST',
-    body: JSON.stringify({receipt: data}),
+    body: formData,
   });
   return await res.json();
 }

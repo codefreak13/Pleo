@@ -1,41 +1,73 @@
-import React, {useState} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import React, {useState, useEffect, createRef} from 'react';
+import {ScrollView, View, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {launchImageLibrary} from 'react-native-image-picker';
 import {
   SectionText,
   Input,
   Button,
-  MediumText,
   UploadImage,
   Header,
-  BoldText,
+  LoadingIcon,
 } from '../../components';
 import {COLORS} from '../../styles';
 import {formatDate} from '../../utils';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import useExpenseDetails from '../../hooks/useExpenseDetail';
 import {Expense} from '../../../api/data/expenses';
+import ViewShot from 'react-native-view-shot';
+import Share from 'react-native-share';
 
 const ExpenseDetail = (props: any) => {
   console.log(props);
   const {mainStyle, buttonStyle, inputStyle, buttonTextStyle} = styles;
+  const [shared, setShared] = useState(false);
+  const viewShotRef = createRef();
 
-  const {route} = props;
-  const {expense: details, selectPhoto} = useExpenseDetails(
-    props.route.params.id,
-  );
+  useEffect(() => {
+    if (!viewShotRef.current || !shared) {
+      return;
+    }
+
+    takeScreenshot(viewShotRef);
+  }, [shared]);
+  const {
+    expense: details,
+    selectPhoto,
+    addComment,
+  } = useExpenseDetails(props.route.params.id);
   const [expense, setExpense] = useState<Expense>(
-    details || props.route.params.item,
+    details || props.route.params,
   );
   const {merchant, date, amount, receipts, comment, user} = expense as Expense;
-  // temp comment until saved
   const [editComment, setEditCommet] = useState(expense.comment);
-  const {first, last, email} = user;
-  const showReceipt = receipts && receipts[0];
 
+  const shareTxReceipt = (url: string) => {
+    const options = {
+      url: url,
+      title: 'Transaction Receipt',
+      message: '',
+    };
+    Share.open(options)
+      .then(res => {})
+      .catch(err => {});
+  };
+
+  const takeScreenshot = ref =>
+    ref.current
+      .capture()
+      .then((uri: string) => {
+        shareTxReceipt(uri);
+      })
+      .then(() => setShared(false));
+  //   useEffect(() => {
+  //     setEditCommet(comment || '');
+  //   }, [comment]);
+  // temp comment until saved
+
+  const {first, last, email} = user;
+  const showReceipt = receipts;
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={mainStyle}>
+    <>
       <Header
         leftButton={{
           child: <FontAwesome name="arrow-left" size={16} />,
@@ -43,37 +75,49 @@ const ExpenseDetail = (props: any) => {
             props.navigation.goBack();
           },
         }}
+        rightButton={{
+          child: <FontAwesome name="ellipsis-h" size={16} />,
+          onclick: () => {
+            setShared(true);
+          },
+        }}
         showBottomBorder
       />
-      <SectionText title="Merchant">{merchant}</SectionText>
-      <SectionText title="Employee Name">{`${first} ${last}`}</SectionText>
-      <SectionText title="Employee Email">{email}</SectionText>
-      <SectionText title="Date">{formatDate.dateB(date)}</SectionText>
-      <SectionText title="Amount">{`${amount.value} ${amount.currency}`}</SectionText>
+      <ScrollView showsVerticalScrollIndicator={false} style={mainStyle}>
+        <ViewShot
+          ref={viewShotRef}
+          options={{format: 'jpg', quality: 0.9}}
+          style={{
+            backgroundColor: COLORS.White,
+          }}>
+          <SectionText title="Merchant">{merchant}</SectionText>
+          <SectionText title="Employee Name">{`${first} ${last}`}</SectionText>
+          <SectionText title="Employee Email">{email}</SectionText>
+          <SectionText title="Date">{formatDate.dateB(date)}</SectionText>
+          <SectionText title="Amount">{`${amount.value} ${amount.currency}`}</SectionText>
 
-      {editComment ? (
-        <BoldText>{comment}</BoldText>
-      ) : (
-        <Input
-          value={editComment}
-          setvalue={setEditCommet}
-          customstyle={inputStyle}
-          multiline={true}
-          placeholder="Add Comment"
-          numberOfLines={3}>
-          <Button customstyle={buttonStyle} disabled={false}>
-            <MediumText customstyle={buttonTextStyle}>Save Comment</MediumText>
-          </Button>
-        </Input>
-      )}
+          <Input
+            value={editComment}
+            setValue={setEditCommet}
+            customstyle={inputStyle}
+            multiline={true}
+            placeholder="Add Comment"
+            numberOfLines={3}>
+            <Button
+              customstyle={buttonStyle}
+              disabled={false}
+              onPress={() => {
+                addComment(editComment);
+              }}
+              title={`${expense.comment ? 'Update' : 'Add'} Comment`}
+              textStyle={buttonTextStyle}
+            />
+          </Input>
 
-      <UploadImage
-        receipt={showReceipt}
-        onPress={async () => {
-          await selectPhoto();
-        }}
-      />
-    </ScrollView>
+          <UploadImage receipts={showReceipt} onPress={selectPhoto} />
+        </ViewShot>
+      </ScrollView>
+    </>
   );
 };
 
@@ -83,12 +127,13 @@ const styles = StyleSheet.create({
   mainStyle: {
     flex: 1,
     margin: RFValue(10),
+    paddingHorizontal: RFValue(10),
   },
   inputStyle: {
     borderColor: COLORS.Grey,
     borderWidth: RFValue(2),
     textAlignVertical: 'top',
-    marginTop: 15,
+    marginTop: RFValue(25),
   },
   buttonStyle: {
     alignSelf: 'flex-end',

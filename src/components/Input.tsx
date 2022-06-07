@@ -6,7 +6,7 @@ type InputProps = {
   children?: ReactNode;
   customstyle?: ViewStyle;
   value: string;
-  setvalue: (x: string) => void;
+  setValue: (x: string) => void;
   placeholder: string;
   numberOfLines: number;
   multiline: boolean;
@@ -17,7 +17,7 @@ const Input = (Props: InputProps) => {
     children,
     customstyle,
     value,
-    setvalue,
+    setValue,
     placeholder,
     numberOfLines,
     multiline,
@@ -28,7 +28,7 @@ const Input = (Props: InputProps) => {
     <>
       <TextInput
         value={value}
-        onChangeText={text => setvalue(text)}
+        onChangeText={text => setValue(text)}
         style={[styles.input, customstyle]}
         placeholder={placeholder}
         numberOfLines={numberOfLines}
@@ -43,5 +43,7 @@ const Input = (Props: InputProps) => {
 export default Input;
 
 const styles = StyleSheet.create({
-  input: {},
+  input: {
+    minHeight: RFValue(100),
+  },
 });

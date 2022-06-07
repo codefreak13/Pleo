@@ -1,8 +1,9 @@
 import {useEffect, useState} from 'react';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import {useSelector} from 'react-redux';
 import {Expense} from '../../api/data/expenses';
 import {expenseActions, RootState} from '../store/store';
+import {imageUtils} from '../utils';
 
 const useExpenseDetails = (expenseID: string) => {
   const expense = useSelector<RootState, Expense | undefined>(
@@ -12,28 +13,29 @@ const useExpenseDetails = (expenseID: string) => {
       a?.comment === b?.comment &&
       a?.receipts === b?.receipts,
   );
-  const [comment, setCommnet] = useState<string | null>(null);
+  const [comment, setComment] = useState<string | null>(null);
+  const [modalVisble, setModalVisible] = useState<boolean>(false);
 
-  const selectPhoto = async () => {
-    const options: Parameters<typeof launchImageLibrary>[0] = {
+  const selectPhoto = async (type: string) => {
+    const libraryOptions: Parameters<typeof launchImageLibrary>[0] = {
       mediaType: 'photo',
-      selectionLimit: 1,
     };
-
+    const cameraOptions: Parameters<typeof launchCamera>[0] = {
+      mediaType: 'photo',
+    };
+    const options =
+      imageUtils.IMAGE_SOURCE.camera === type ? cameraOptions : libraryOptions;
     try {
-      const res = await launchImageLibrary(options);
+      const res = await imageUtils.fetchImage(type, options);
+      // const res = await launchImageLibrary(options);
       // setState({ imageLoading: true })
 
       const image = {
         uri: res.assets?.[0].uri,
         type: res.assets?.[0].type,
-        data: res.assets?.[0].base64,
+        name: 'receipt',
       };
-      const base64 = res.assets?.[0].base64;
-      if (!base64) {
-        throw new Error('Unable to read selected photo');
-      }
-      expenseActions.addReceipt(expenseID, base64);
+      expenseActions.addReceipt(expenseID, image);
     } catch (err) {
       console.log(err);
     }
@@ -42,7 +44,7 @@ const useExpenseDetails = (expenseID: string) => {
   return {
     expense,
     addComment: (comment: string) => {
-      setCommnet(comment);
+      setComment(comment);
       expenseActions.addComment(expenseID, comment);
     },
     selectPhoto,

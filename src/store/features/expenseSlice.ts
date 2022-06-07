@@ -8,6 +8,7 @@ import {
 } from '@reduxjs/toolkit';
 import {ExpenseDataProps} from '../../screens/expenses/List';
 import api from '../../api';
+import {Expense} from '../../../api/data/expenses';
 
 type ExpenseInitialState = {
   loading: boolean;
@@ -31,10 +32,10 @@ function isPendingAction(action: AnyAction): action is PendingAction {
   return action.type.endsWith('/pending');
 }
 function isRejectedAction(action: AnyAction): action is RejectedAction {
-  return action.type.endsWith('/pending');
+  return action.type.endsWith('/rejected');
 }
 function isFullfilledAction(action: AnyAction): action is FulfilledAction {
-  return action.type.endsWith('/pending');
+  return action.type.endsWith('/fulfilled');
 }
 
 const loadingThunkReducer = createReducer(initialState, builder => {
@@ -47,6 +48,7 @@ const loadingThunkReducer = createReducer(initialState, builder => {
     .addMatcher(
       action => isRejectedAction(action) || isFullfilledAction(action),
       (state, action) => {
+        console.log('/rejected match got called', action, state);
         state.loading = false;
       },
     );
@@ -67,16 +69,21 @@ const fetchExpenses = createAsyncThunk(
 const addComment = createAsyncThunk(
   'addComment',
   async (input: {expenseId: string; comment: string}, {dispatch}) => {
-    const data = await api.addCommentToExpense(input.expenseId, input.comment);
-    console.log(data, 'addComment');
+    const data: Expense = await api.addCommentToExpense(
+      input.expenseId,
+      input.comment,
+    );
     return data;
   },
 );
+
 const addReceipt = createAsyncThunk(
   'addReceipt',
   async (input: {expenseId: string; file: any}, {dispatch}) => {
-    const data = await api.addReceiptToExpense(input.expenseId, input.file);
-    console.log(data, 'addReceipt');
+    const data: Expense = await api.addReceiptToExpense(
+      input.expenseId,
+      input.file,
+    );
     return data;
   },
 );
@@ -102,17 +109,14 @@ export const userSlice = createSlice({
         exp => exp.id === action.meta.arg.expenseId,
       );
       const expense = state.expenses[index];
-      expense.comment = action.payload;
-      state.expenses[index] = expense;
+      state.expenses[index] = action.payload;
     });
     builder.addCase(addReceipt.fulfilled, (state, action) => {
       // Add user to the state array
       const index = state.expenses.findIndex(
         exp => exp.id === action.meta.arg.expenseId,
       );
-      const expense = state.expenses[index];
-      expense.receipts = (expense.receipts || []).concat(action.payload);
-      state.expenses[index] = expense;
+      state.expenses[index] = action.payload;
     });
   },
 });

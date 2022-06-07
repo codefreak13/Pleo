@@ -1,17 +1,19 @@
 import React, {ReactNode} from 'react';
-import {StyleSheet, TextInput, ViewStyle, TouchableOpacity} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
-import MediumText from './text/MediumText';
+import {StyleSheet, ViewStyle, TouchableOpacity, TextStyle} from 'react-native';
+import {MediumText} from './text/Text';
 
 type ButtonProps = {
   customstyle?: ViewStyle;
+  title?: string;
   onPress?: () => void;
-  children: ReactNode;
+  textStyle?: TextStyle;
   disabled?: boolean;
+  children?: ReactNode;
 };
 
 const Button = (Props: ButtonProps) => {
-  const {customstyle, onPress, children, disabled, ...rest} = Props;
+  const {customstyle, onPress, title, textStyle, children, disabled, ...rest} =
+    Props;
 
   return (
     <TouchableOpacity
@@ -19,6 +21,7 @@ const Button = (Props: ButtonProps) => {
       onPress={onPress}
       disabled={disabled}
       {...rest}>
+      <MediumText customstyle={textStyle}>{title}</MediumText>
       {children}
     </TouchableOpacity>
   );

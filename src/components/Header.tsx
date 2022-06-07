@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   leftButton: {
     position: 'absolute',
-    left: 10,
+    left: 15,
     zIndex: 1,
   },
   headerIcon: {
