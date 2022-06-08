@@ -7,18 +7,6 @@ type TextProps = {
   customstyle?: TextStyle;
 };
 
-// const RegularText = (Props: TextProps) => {
-//   const {children, customstyle, ...rest} = Props;
-
-//   return (
-//     <Text style={[styles.text, customstyle]} {...rest}>
-//       {children}
-//     </Text>
-//   );
-// };
-
-// export default RegularText;
-
 const textStyle = (style: {
   fontFamily?: string;
   fontSize?: number;
@@ -53,7 +41,7 @@ export const RegularText = BaseText(textStyle({}));
 export const MediumText = BaseText(
   textStyle({
     fontFamily: 'Roboto-Medium',
-    fontSize: RFValue(13),
+    fontSize: RFValue(14),
   }),
 );
 

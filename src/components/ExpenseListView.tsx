@@ -2,9 +2,9 @@ import React from 'react';
 import {View, SectionList, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import ExpenseListItem from './ExpenseListItem';
-import {BoldText} from '.';
 import {ExpenseDataProps} from '../screens/expenses/List';
 import {formatData} from '../utils';
+import {MediumText, BoldText} from './text/Text';
 
 type ExpenseListViewProps = {
   expenses: ExpenseDataProps[];
@@ -14,15 +14,14 @@ type ExpenseListViewProps = {
 
 const ExpenseListView = (props: ExpenseListViewProps) => {
   const {expenses, onPress} = props;
-  const {titleContainerStyle, emptyListStyle, listStyle} = styles;
   return (
     <SectionList
-      style={listStyle}
+      style={styles.listStyle}
       keyExtractor={(item, index) => item.date + index}
       showsVerticalScrollIndicator={false}
       sections={formatData(expenses)}
       ListEmptyComponent={
-        <View style={emptyListStyle}>
+        <View style={styles.emptyListStyle}>
           <BoldText>No Expenses</BoldText>
         </View>
       }
@@ -30,10 +29,11 @@ const ExpenseListView = (props: ExpenseListViewProps) => {
         <ExpenseListItem {...item} onPress={() => onPress(item)} />
       )}
       renderSectionHeader={({section: {title}}) => (
-        <View style={titleContainerStyle}>
-          <BoldText>{title}</BoldText>
+        <View style={styles.titleContainerStyle}>
+          <MediumText>{title}</MediumText>
         </View>
       )}
+      stickyHeaderHiddenOnScroll={true}
       onEndReachedThreshold={0.4}
       onEndReached={() => props.loadMore()}
     />
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginHorizontal: RFValue(10),
     marginTop: RFValue(20),
+    backgroundColor: 'transparent',
   },
   emptyListStyle: {
     alignItems: 'center',

@@ -1,38 +1,32 @@
 import React from 'react';
-import {View, Pressable, StyleSheet} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {View, Pressable, StyleSheet, Platform} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {BoldText, MediumText, RegularText} from './text/Text';
+import {BoldText, RegularText} from './text/Text';
 import {ExpenseDataProps} from '../screens/expenses/List';
 import {COLORS} from '../styles';
-import {formatDate} from '../utils';
 
 type ExpenseListItemProps = {
   onPress: () => void;
 } & ExpenseDataProps;
 
 const ExpenseListItem = (props: ExpenseListItemProps) => {
+  console.log(props, 'propsss');
   const {
     amount: {currency, value},
     merchant,
-    receipts,
-    date,
     user: {first, last},
     onPress,
   } = props;
 
-  const {mainStyle, detailContainerStyle, detailViewStyle, merchantStyle} =
-    styles;
-
   return (
-    <Pressable style={mainStyle} onPress={() => onPress()}>
-      <View style={detailContainerStyle}>
-        <View style={detailViewStyle}>
-          <BoldText customstyle={merchantStyle}>{merchant}</BoldText>
-          <MediumText>{`${first} ${last}`}</MediumText>
+    <Pressable style={styles.mainStyle} onPress={() => onPress()}>
+      <View style={styles.detailContainerStyle}>
+        <View style={styles.detailViewStyle}>
+          <BoldText customstyle={styles.merchantStyle}>{merchant}</BoldText>
+          <RegularText>{`${first} ${last}`}</RegularText>
         </View>
       </View>
-      <BoldText>{`${value} ${currency}`}</BoldText>
+      <RegularText>{`${value} ${currency}`}</RegularText>
     </Pressable>
   );
 };
@@ -47,7 +41,17 @@ const styles = StyleSheet.create({
     margin: RFValue(10),
     backgroundColor: COLORS.White,
     padding: RFValue(13),
-    elevation: 5,
+    ...Platform.select({
+      android: {
+        elevation: 5,
+      },
+      ios: {
+        shadowOffset: {width: RFValue(10), height: RFValue(10)},
+        shadowColor: COLORS.Grey,
+        shadowOpacity: 1,
+        zIndex: 999,
+      },
+    }),
   },
   detailContainerStyle: {
     flexDirection: 'row',

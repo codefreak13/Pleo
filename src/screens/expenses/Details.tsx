@@ -15,57 +15,32 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import useExpenseDetails from '../../hooks/useExpenseDetail';
 import {Expense} from '../../../api/data/expenses';
 import ViewShot from 'react-native-view-shot';
-import Share from 'react-native-share';
 
 const ExpenseDetail = (props: any) => {
-  console.log(props);
-  const {mainStyle, buttonStyle, inputStyle, buttonTextStyle} = styles;
-  const [shared, setShared] = useState(false);
-  const viewShotRef = createRef();
+  const {
+    expense: details,
+    selectPhoto,
+    addComment,
+    shared,
+    setShared,
+    takeScreenshot,
+    viewShotRef,
+  } = useExpenseDetails(props.route.params.id);
+
+  const [expense, setExpense] = useState<Expense>(
+    details || props.route.params,
+  );
+  const {merchant, date, amount, user} = expense as Expense;
+  const [editComment, setEditCommet] = useState(expense.comment);
 
   useEffect(() => {
     if (!viewShotRef.current || !shared) {
       return;
     }
-
     takeScreenshot(viewShotRef);
   }, [shared]);
-  const {
-    expense: details,
-    selectPhoto,
-    addComment,
-  } = useExpenseDetails(props.route.params.id);
-  const [expense, setExpense] = useState<Expense>(
-    details || props.route.params,
-  );
-  const {merchant, date, amount, receipts, comment, user} = expense as Expense;
-  const [editComment, setEditCommet] = useState(expense.comment);
-
-  const shareTxReceipt = (url: string) => {
-    const options = {
-      url: url,
-      title: 'Transaction Receipt',
-      message: '',
-    };
-    Share.open(options)
-      .then(res => {})
-      .catch(err => {});
-  };
-
-  const takeScreenshot = ref =>
-    ref.current
-      .capture()
-      .then((uri: string) => {
-        shareTxReceipt(uri);
-      })
-      .then(() => setShared(false));
-  //   useEffect(() => {
-  //     setEditCommet(comment || '');
-  //   }, [comment]);
-  // temp comment until saved
 
   const {first, last, email} = user;
-  const showReceipt = receipts;
   return (
     <>
       <Header
@@ -83,7 +58,7 @@ const ExpenseDetail = (props: any) => {
         }}
         showBottomBorder
       />
-      <ScrollView showsVerticalScrollIndicator={false} style={mainStyle}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.mainStyle}>
         <ViewShot
           ref={viewShotRef}
           options={{format: 'jpg', quality: 0.9}}
@@ -99,22 +74,21 @@ const ExpenseDetail = (props: any) => {
           <Input
             value={editComment}
             setValue={setEditCommet}
-            customstyle={inputStyle}
+            customstyle={styles.inputStyle}
             multiline={true}
             placeholder="Add Comment"
             numberOfLines={3}>
             <Button
-              customstyle={buttonStyle}
-              disabled={false}
+              customstyle={styles.buttonStyle}
               onPress={() => {
                 addComment(editComment);
               }}
               title={`${expense.comment ? 'Update' : 'Add'} Comment`}
-              textStyle={buttonTextStyle}
+              textStyle={styles.buttonTextStyle}
             />
           </Input>
 
-          <UploadImage receipts={showReceipt} onPress={selectPhoto} />
+          <UploadImage expense={expense} onPress={selectPhoto} />
         </ViewShot>
       </ScrollView>
     </>
@@ -134,6 +108,7 @@ const styles = StyleSheet.create({
     borderWidth: RFValue(2),
     textAlignVertical: 'top',
     marginTop: RFValue(25),
+    padding: RFValue(7),
   },
   buttonStyle: {
     alignSelf: 'flex-end',

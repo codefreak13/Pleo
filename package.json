@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "e2e:ios:build": "detox build -c ios.debug",
+    "e2e:ios:test": "detox test -c ios.debug"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.10",
@@ -38,6 +40,7 @@
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "babel-jest": "^26.6.3",
+    "detox": "^19.7.1",
     "eslint": "^7.32.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.67.0",

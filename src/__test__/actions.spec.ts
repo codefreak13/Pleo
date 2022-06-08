@@ -2,8 +2,7 @@ jest.mock('../api');
 import {Button, TouchableOpacity, View} from 'react-native';
 import {Expense} from '../../api/data/expenses';
 import api from '../api';
-import useExpenses from '../hooks/useExpeses';
-import {expenseActions, store} from '../store/store';
+import {expenseActions, store} from '../store';
 
 const singleExpense = {
   id: '5b995dff2e3cb74644948a66',

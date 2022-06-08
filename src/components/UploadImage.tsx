@@ -1,69 +1,40 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
-import FastImage from 'react-native-fast-image';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {COLORS} from '../styles';
 import ReceiptModal from './ReceiptModal';
-import {DEVICE_WIDTH} from '../styles/utils';
-import {BASEURL} from '../api';
+import {DEVICE_WIDTH, SLIDER_WIDTH, ITEM_WIDTH} from '../styles/utils';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import Button from './Button';
-
-const emptyImage = require('../../assets/images/upload.png');
-const SLIDER_WIDTH = Dimensions.get('window').width;
-const ITEM_WIDTH = SLIDER_WIDTH - RFValue(55);
+import useUploadImage from '../hooks/useUploadImage';
+import {Expense} from '../../api/data/expenses';
+import {COLORS} from '../styles';
+import CarouselCardItem from './Carousel';
 
 type UploadProps = {
-  receipts: any[];
-  onPress: (type: string) => void;
+  expense: Expense;
+  onPress: (id: string, type: string) => void;
 };
 
 const UploadImage = (Props: UploadProps) => {
-  const isCarousel = React.useRef(null);
-  const [index, setIndex] = React.useState<number>(0);
-  const [type, setType] = React.useState<string>('');
-
-  const {receipts, onPress} = Props;
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const {
+    expense: {id, receipts},
+    onPress,
+  } = Props;
+  const {
+    index,
+    isCarousel,
+    setIndex,
+    type,
+    selectImageMedium,
+    modalVisible,
+    setModalVisible,
+  } = useUploadImage();
 
   useEffect(() => {
     type && imageUpload();
   }, [type]);
 
   const imageUpload = async () => {
-    await onPress(type);
-  };
-  const CarouselCardItem = ({
-    item,
-  }: {
-    item: {url: string; addReceipt?: boolean};
-  }) => {
-    if (item?.addReceipt) {
-      return (
-        <Button onPress={() => setModalVisible(!modalVisible)}>
-          <FastImage
-            style={styles.imageStyle}
-            source={emptyImage}
-            resizeMode={FastImage.resizeMode.cover}
-          />
-        </Button>
-      );
-    }
-    const image = {uri: `${BASEURL}${item.url}`};
-    return (
-      <FastImage
-        style={styles.uriImageStyle}
-        source={image}
-        resizeMode={FastImage.resizeMode.cover}
-      />
-    );
-  };
-
-  const selectImageMedium = async (type: string | undefined) => {
-    setModalVisible(!modalVisible);
-    if (type) {
-      setType(type);
-    }
+    onPress(id, type);
   };
 
   return (
@@ -72,13 +43,30 @@ const UploadImage = (Props: UploadProps) => {
         activeSlideAlignment="center"
         ref={isCarousel}
         data={[...receipts, {addReceipt: true}]}
-        renderItem={CarouselCardItem}
+        renderItem={({item}: {item: {url: string; addReceipt?: boolean}}) => (
+          <CarouselCardItem
+            item={item}
+            setModalVisible={setModalVisible}
+            modalVisible={modalVisible}
+          />
+        )}
         sliderWidth={SLIDER_WIDTH}
         itemWidth={ITEM_WIDTH}
         inactiveSlideShift={RFValue(1)}
         onSnapToItem={(index: number) => setIndex(index)}
       />
-
+      <Pagination
+        dotsLength={receipts.length > 0 ? receipts.length + 1 : 0}
+        activeDotIndex={index}
+        ref={isCarousel}
+        dotStyle={styles.carouselIcon_1}
+        inactiveDotStyle={styles.carouselIcon_2}
+        inactiveDotOpacity={1}
+        inactiveDotScale={1}
+        dotContainerStyle={{
+          marginEnd: RFValue(0.5),
+        }}
+      />
       <ReceiptModal
         modalVisible={modalVisible}
         setModalVisible={selectImageMedium}
@@ -111,5 +99,17 @@ const styles = StyleSheet.create({
   textStyle: {
     alignSelf: 'center',
     marginVertical: RFValue(20),
+  },
+  carouselIcon_1: {
+    width: RFValue(18),
+    height: RFValue(5),
+    backgroundColor: 'blue',
+    borderRadius: RFValue(5),
+  },
+  carouselIcon_2: {
+    width: RFValue(6),
+    height: RFValue(5),
+    backgroundColor: COLORS.Black,
+    borderRadius: RFValue(5),
   },
 });

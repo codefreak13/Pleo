@@ -87,14 +87,20 @@ const addReceipt = createAsyncThunk(
     return data;
   },
 );
-export const userSlice = createSlice({
+export const expenseSlice = createSlice({
   name: 'expenses',
   initialState,
   reducers: {
-    // loading: (state, action) => {},
-    // setFirstName: (state, action: PayloadAction<string>) => {
-    //   state.firstName = action.payload;
-    // },
+    updateExpenses: (state, {payload}) => {
+      const expenses = state.expenses;
+      const expense = state.expenses.findIndex(exp => payload.id === exp.id);
+
+      const getExpense = expenses[expense];
+      getExpense.receipts.push(payload.image);
+
+      state.expenses[expense] = getExpense;
+      return state;
+    },
     loadingThunkReducer,
   },
   extraReducers: builder => {
@@ -121,7 +127,7 @@ export const userSlice = createSlice({
   },
 });
 
-const {} = userSlice.actions;
+const {updateExpenses} = expenseSlice.actions;
 
 // // called only once, at the point where the slice.action is referenced.
 export const expenseActions = (dispatch: any) => ({
@@ -138,5 +144,5 @@ export const expenseActions = (dispatch: any) => ({
 
 // const selectExpense = useSelector((state: any) => state.expenses.find((exp: any) => exp.id === expenseID));
 // export const selectUser = (state: RootState) => state.expenses;
-
-export default userSlice.reducer;
+export {updateExpenses};
+export default expenseSlice.reducer;

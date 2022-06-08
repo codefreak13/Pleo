@@ -26,3 +26,6 @@ export {default as Header} from './Header';
 
 //Modal
 export {default as ReceiptModal} from './ReceiptModal';
+
+//Carousel
+export {default as CarouselCardItem} from './Carousel';

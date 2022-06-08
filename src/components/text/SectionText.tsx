@@ -1,6 +1,8 @@
 import React from 'react';
 import {StyleSheet, Text, TextStyle} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
+import {COLORS} from '../../styles';
+import {MediumText, RegularText} from './Text';
 
 type TextProps = {
   title?: string;
@@ -9,12 +11,12 @@ type TextProps = {
 };
 
 const SectionText = (Props: TextProps) => {
-  const {title, children, customstyle} = Props;
+  const {title, children} = Props;
 
   return (
     <>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={[styles.text, customstyle]}>{children}</Text>
+      <RegularText customstyle={styles.title}>{title}</RegularText>
+      <MediumText>{children}</MediumText>
     </>
   );
 };
@@ -26,10 +28,5 @@ const styles = StyleSheet.create({
     fontSize: RFValue(18),
     marginBottom: RFValue(5),
     marginTop: RFValue(7),
-    fontWeight: '600',
-  },
-  text: {
-    fontFamily: 'Roboto-Bold',
-    fontSize: RFValue(16),
   },
 });
