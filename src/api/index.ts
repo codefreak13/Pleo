@@ -1,10 +1,9 @@
-import {Platform} from 'react-native';
+import {platformUtils} from '../utils';
 
 const port = '3000';
-export const BASEURL =
-  Platform.OS === 'android'
-    ? `http://10.0.2.2:${port}`
-    : `http://localhost:${port}`;
+export const BASEURL = platformUtils.isAndroid()
+  ? `http://10.0.2.2:${port}`
+  : `http://localhost:${port}`;
 
 export async function getExpenses(offset: number, limit: number = 15) {
   const res = await fetch(

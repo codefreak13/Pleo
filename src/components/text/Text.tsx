@@ -5,6 +5,7 @@ import {RFValue} from 'react-native-responsive-fontsize';
 type TextProps = {
   children?: string;
   customstyle?: TextStyle;
+  testID?: string;
 };
 
 const textStyle = (style: {
@@ -49,6 +50,6 @@ export const BoldText = BaseText(
   textStyle({
     fontFamily: 'Roboto-Bold',
     fontSize: RFValue(16),
-    fontWeight: '600',
+    fontWeight: 'bold',
   }),
 );

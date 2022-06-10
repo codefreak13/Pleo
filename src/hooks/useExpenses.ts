@@ -1,15 +1,13 @@
 import {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {expenseActions, RootState} from '../store';
+import {expenseActions} from '../store';
+import {useAppSelector} from '../store/hooks';
 
 const useExpenses = () => {
-  const limit = 15;
+  const limit = 25;
 
-  const {expenses, loading, error} = useSelector<
-    RootState,
-    RootState['expenses']
-  >(state => state.expenses);
-
+  const {
+    expenses: {expenses},
+  } = useAppSelector(state => state);
   const {getExpenses} = expenseActions;
   const [offset, setOffset] = useState(0);
 
@@ -18,12 +16,9 @@ const useExpenses = () => {
   }, [offset]);
 
   const getMore = () => {
-    if (loading) {
-      return;
-    }
     setOffset(offset + limit);
   };
-  return {expenses, loading, error, getMore};
+  return {expenses, getMore};
 };
 
 export default useExpenses;

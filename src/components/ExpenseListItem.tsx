@@ -10,7 +10,6 @@ type ExpenseListItemProps = {
 } & ExpenseDataProps;
 
 const ExpenseListItem = (props: ExpenseListItemProps) => {
-  console.log(props, 'propsss');
   const {
     amount: {currency, value},
     merchant,
@@ -19,7 +18,10 @@ const ExpenseListItem = (props: ExpenseListItemProps) => {
   } = props;
 
   return (
-    <Pressable style={styles.mainStyle} onPress={() => onPress()}>
+    <Pressable
+      style={styles.mainStyle}
+      onPress={() => onPress()}
+      testID={'listItem'}>
       <View style={styles.detailContainerStyle}>
         <View style={styles.detailViewStyle}>
           <BoldText customstyle={styles.merchantStyle}>{merchant}</BoldText>

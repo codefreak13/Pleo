@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     margin: RFValue(20),
     backgroundColor: COLORS.White,
     borderRadius: RFValue(20),
-    padding: RFValue(100),
+    padding: RFValue(70),
     alignItems: 'center',
     shadowColor: COLORS.White,
     shadowOffset: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     borderRadius: RFValue(5),
-    padding: RFValue(13),
+    padding: RFValue(20),
     elevation: 2,
     marginVertical: RFValue(20),
     backgroundColor: COLORS.White,

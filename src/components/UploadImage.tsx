@@ -8,6 +8,7 @@ import useUploadImage from '../hooks/useUploadImage';
 import {Expense} from '../../api/data/expenses';
 import {COLORS} from '../styles';
 import CarouselCardItem from './Carousel';
+import {useSelector} from 'react-redux';
 
 type UploadProps = {
   expense: Expense;
@@ -27,13 +28,15 @@ const UploadImage = (Props: UploadProps) => {
     selectImageMedium,
     modalVisible,
     setModalVisible,
+    setType,
   } = useUploadImage();
 
   useEffect(() => {
     type && imageUpload();
+    setType('');
   }, [type]);
 
-  const imageUpload = async () => {
+  const imageUpload = () => {
     onPress(id, type);
   };
 
@@ -79,12 +82,8 @@ export default UploadImage;
 
 const styles = StyleSheet.create({
   mainStyle: {
-    // borderStyle: 'dashed',
-    // borderWidth: 1,
     borderRadius: RFValue(1.5),
     marginVertical: RFValue(20),
-    // padding: RFValue(70),
-    // backgroundColor: COLORS.Grey,
   },
   imageStyle: {
     width: RFValue(50),

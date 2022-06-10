@@ -2,6 +2,7 @@ import React, {ReactNode} from 'react';
 import {StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../styles/utils';
 import {COLORS} from '../styles';
+import {BoldText} from './text/Text';
 
 export type HeaderButton = {
   text?: string;
@@ -15,6 +16,8 @@ export type HeaderProps = {
   customMiddleIcon?: ReactNode;
   showBottomBorder?: boolean;
   customHeaderStyles?: ViewStyle;
+  title?: string;
+  testID?: string;
 };
 
 /**
@@ -27,6 +30,8 @@ const Header = (props: HeaderProps) => {
     showBottomBorder,
     customMiddleIcon,
     customHeaderStyles,
+    title,
+    testID,
   } = props;
 
   return (
@@ -45,7 +50,13 @@ const Header = (props: HeaderProps) => {
       )}
 
       {customMiddleIcon && (
-        <View style={styles.customMiddleIcon}>{customMiddleIcon}</View>
+        <View style={styles.customMiddleIcon}>
+          {title ? (
+            <BoldText testID={testID}>{title}</BoldText>
+          ) : (
+            customMiddleIcon
+          )}
+        </View>
       )}
 
       {rightButton && (

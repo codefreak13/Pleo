@@ -28,5 +28,6 @@ const styles = StyleSheet.create({
     fontSize: RFValue(18),
     marginBottom: RFValue(5),
     marginTop: RFValue(7),
+    backgroundColor: COLORS.Grey,
   },
 });

@@ -3,24 +3,24 @@ import {StyleSheet, TextInput, ViewStyle} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 
 type InputProps = {
-  children?: ReactNode;
   customstyle?: ViewStyle;
   value: string;
   setValue: (x: string) => void;
   placeholder: string;
   numberOfLines: number;
   multiline: boolean;
+  testID?: string;
 };
 
 const Input = (Props: InputProps) => {
   const {
-    children,
     customstyle,
     value,
     setValue,
     placeholder,
     numberOfLines,
     multiline,
+    testID,
     ...rest
   } = Props;
 
@@ -33,9 +33,9 @@ const Input = (Props: InputProps) => {
         placeholder={placeholder}
         numberOfLines={numberOfLines}
         multiline={multiline}
+        testID={testID}
         {...rest}
       />
-      {children}
     </>
   );
 };

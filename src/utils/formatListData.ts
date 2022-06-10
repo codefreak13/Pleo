@@ -1,20 +1,43 @@
-import {Expense} from '../../api/data/expenses';
-import {dateA} from './formatDate';
+import {formatByMonthAndYear} from './formatDate';
 
-export const formatData = (data: Expense[]) => {
-  const dataMap = data.reduce((accum, current) => {
-    const date = dateA(current.date);
-    return {...accum, [date]: (accum[date] || []).concat(current)};
-  }, {} as {[x in string]: Expense[]});
-
-  const sortedDate = Object.keys(dataMap).sort((a, b) =>
-    new Date(a) < new Date(b) ? -1 : 1,
-  );
-
-  return sortedDate.map(dateString => {
-    return {
-      title: dateString,
-      data: dataMap[dateString],
-    };
-  });
+export const formatData = (data: any) => {
+  return data.reduce((accum: any, current: any) => {
+    const foundIndex = accum.findIndex(
+      (element: any) => element.title === formatByMonthAndYear(current.date),
+    );
+    if (foundIndex === -1) {
+      return [
+        ...accum,
+        {
+          title: formatByMonthAndYear(current.date),
+          data: [
+            {
+              id: current.id,
+              amount: current.amount,
+              merchant: current.merchant,
+              date: current.date,
+              receipts: current.receipts,
+              comment: current.comment,
+              user: current.user,
+            },
+          ],
+        },
+      ];
+    }
+    accum[foundIndex].data = [
+      ...accum[foundIndex].data,
+      {
+        id: current.id,
+        amount: current.amount,
+        merchant: current.merchant,
+        date: current.date,
+        receipts: current.receipts,
+        comment: current.comment,
+        user: current.user,
+      },
+    ];
+    return accum.sort(
+      (a: {title: number}, b: {title: number}) => b.title - a.title,
+    );
+  }, []);
 };

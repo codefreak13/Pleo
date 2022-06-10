@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {StyleSheet, ViewStyle, TouchableOpacity, TextStyle} from 'react-native';
+import {StyleSheet, ViewStyle, Pressable, TextStyle} from 'react-native';
 import {MediumText} from './text/Text';
 
 type ButtonProps = {
@@ -7,23 +7,33 @@ type ButtonProps = {
   title?: string;
   onPress?: () => void;
   textStyle?: TextStyle;
+  testID?: string;
   disabled?: boolean;
   children?: ReactNode;
 };
 
 const Button = (Props: ButtonProps) => {
-  const {customstyle, onPress, title, textStyle, children, disabled, ...rest} =
-    Props;
+  const {
+    customstyle,
+    onPress,
+    title,
+    textStyle,
+    children,
+    testID,
+    disabled,
+    ...rest
+  } = Props;
 
   return (
-    <TouchableOpacity
+    <Pressable
+      testID={testID}
       style={[styles.button, customstyle]}
       onPress={onPress}
       disabled={disabled}
       {...rest}>
       <MediumText customstyle={textStyle}>{title}</MediumText>
       {children}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

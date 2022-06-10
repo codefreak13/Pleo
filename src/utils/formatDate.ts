@@ -1,6 +1,10 @@
 import moment from 'moment';
 
-export const dateA = (date: string) => moment(date).format('MMM YYYY');
+export const formatByMonthAndYear = (date: string | Date) =>
+  moment(date).format('MMM YYYY');
 
-export const dateB = (date: string | string) =>
+export const formatByDayMonthAndYear = (date: string | Date) =>
   moment(date).format('dddd DD MMM');
+
+export const formatByTime = (date: string | Date) =>
+  moment(date).format('hh:mm:ss a');

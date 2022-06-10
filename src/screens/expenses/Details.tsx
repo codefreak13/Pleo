@@ -1,5 +1,5 @@
-import React, {useState, useEffect, createRef} from 'react';
-import {ScrollView, View, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {ScrollView, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {
   SectionText,
@@ -18,20 +18,18 @@ import ViewShot from 'react-native-view-shot';
 
 const ExpenseDetail = (props: any) => {
   const {
-    expense: details,
+    expense,
     selectPhoto,
     addComment,
     shared,
     setShared,
     takeScreenshot,
     viewShotRef,
+    loading,
   } = useExpenseDetails(props.route.params.id);
 
-  const [expense, setExpense] = useState<Expense>(
-    details || props.route.params,
-  );
-  const {merchant, date, amount, user} = expense as Expense;
-  const [editComment, setEditCommet] = useState(expense.comment);
+  const {merchant, date, amount, user, comment} = expense as Expense;
+  const [editComment, setEditCommet] = useState(comment);
 
   useEffect(() => {
     if (!viewShotRef.current || !shared) {
@@ -44,6 +42,8 @@ const ExpenseDetail = (props: any) => {
   return (
     <>
       <Header
+        title="Expense Details"
+        customMiddleIcon
         leftButton={{
           child: <FontAwesome name="arrow-left" size={16} />,
           onclick: () => {
@@ -58,7 +58,10 @@ const ExpenseDetail = (props: any) => {
         }}
         showBottomBorder
       />
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.mainStyle}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.mainStyle}
+        testID={'detailsView'}>
         <ViewShot
           ref={viewShotRef}
           options={{format: 'jpg', quality: 0.9}}
@@ -68,7 +71,9 @@ const ExpenseDetail = (props: any) => {
           <SectionText title="Merchant">{merchant}</SectionText>
           <SectionText title="Employee Name">{`${first} ${last}`}</SectionText>
           <SectionText title="Employee Email">{email}</SectionText>
-          <SectionText title="Date">{formatDate.dateB(date)}</SectionText>
+          <SectionText title="Date">
+            {formatDate.formatByDayMonthAndYear(date)}
+          </SectionText>
           <SectionText title="Amount">{`${amount.value} ${amount.currency}`}</SectionText>
 
           <Input
@@ -77,19 +82,21 @@ const ExpenseDetail = (props: any) => {
             customstyle={styles.inputStyle}
             multiline={true}
             placeholder="Add Comment"
-            numberOfLines={3}>
-            <Button
-              customstyle={styles.buttonStyle}
-              onPress={() => {
-                addComment(editComment);
-              }}
-              title={`${expense.comment ? 'Update' : 'Add'} Comment`}
-              textStyle={styles.buttonTextStyle}
-            />
-          </Input>
+            numberOfLines={3}
+            // testID="inputText"
+          />
+          <Button
+            customstyle={styles.buttonStyle}
+            onPress={() => {
+              addComment(editComment);
+            }}
+            title={`${comment ? 'Update' : 'Add'} Comment`}
+            textStyle={styles.buttonTextStyle}
+          />
 
-          <UploadImage expense={expense} onPress={selectPhoto} />
+          <UploadImage expense={expense as Expense} onPress={selectPhoto} />
         </ViewShot>
+        {loading && <LoadingIcon />}
       </ScrollView>
     </>
   );

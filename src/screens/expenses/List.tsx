@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {BoldText} from '../../components';
+import {BoldText, Header} from '../../components';
 import {ExpenseListView} from '../../components';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {
@@ -15,10 +15,10 @@ export type ExpenseDataProps = Expense;
 
 const ExpenseList = () => {
   const {navigate} = useNavigation<NavigationProp<ExpenseStackParamList>>();
-  const {expenses, loading, error, getMore} = useExpenses();
+  const {expenses, getMore} = useExpenses();
   return (
     <View style={styles.mainStyle}>
-      <BoldText>PLEO EXPENSE TRACKER</BoldText>
+      <Header title="PLEO EXPENSE TRACKER" customMiddleIcon testID="title" />
       <ExpenseListView
         expenses={expenses}
         onPress={item => {

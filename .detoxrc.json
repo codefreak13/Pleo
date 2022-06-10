@@ -1,53 +1,53 @@
 {
-    "testRunner": "jest",
-    "runnerConfig": "e2e/config.json",
-    "behaviour": {
-        "init": {
-            "reinstallApp": true,
-            "launchApp": true
-        }
-    },
-    "skipLegacyWorkersInjection": true,
-    "apps": {
-        "ios.debug": {
-            "type": "ios.simulator",
-            "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/Temedica.app",
-            "build": "xcodebuild -project ios/Temedica.xcodeproj -scheme Temedica -sdk iphonesimulator -derivedDataPath ios/build"
-        },
-        "android": {
-            "type": "android.apk",
-            "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
-            "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd .."
-        }
-    },
-    "devices": {
-        "simulator": {
-            "type": "ios.simulator",
-            "device": {
-                "type": "iPhone 13"
-            }
-        },
-        "emulator": {
-            "type": "android.emulator",
-            "device": {
-                "avdName": "Pixel_XL_API_29"
-            }
-        }
-    },
-    "configurations": {
-        "ios.debug": {
-            "type": "ios.simulator",
-            "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/Temedica.app",
-            "build": "xcodebuild -workspace ios/Temedica.xcworkspace -scheme Temedica -sdk iphonesimulator -derivedDataPath ios/build",
-            "device": {
-                "type":"iPhone 13",
-                "os": "iOS 15.0"
-            }
-        },
-        "android": {
-            "type": "android.apk",
-            "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
-            "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd .."
-        }
+  "testRunner": "jest",
+  "runnerConfig": "e2e/config.json",
+  "behaviour": {
+    "init": {
+      "reinstallApp": true,
+      "launchApp": true
     }
+  },
+  "skipLegacyWorkersInjection": true,
+  "apps": {
+    "ios.debug": {
+      "type": "ios.simulator",
+      "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/Pleo.app",
+      "build": "xcodebuild -project ios/Pleo.xcodeproj -scheme Pleo -sdk iphonesimulator -derivedDataPath ios/build"
+    },
+    "android": {
+      "type": "android.apk",
+      "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd .."
+    }
+  },
+  "devices": {
+    "simulator": {
+      "type": "ios.simulator",
+      "device": {
+        "type": "iPhone 13"
+      }
+    },
+    "emulator": {
+      "type": "android.emulator",
+      "device": {
+        "avdName": "Pixel_XL_API_29"
+      }
+    }
+  },
+  "configurations": {
+    "ios.debug": {
+      "type": "ios.simulator",
+      "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/Pleo.app",
+      "build": "xcodebuild -workspace ios/Pleo.xcworkspace -scheme Pleo -sdk iphonesimulator -derivedDataPath ios/build",
+      "device": {
+        "type": "iPhone 13",
+        "os": "iOS 15.0"
+      }
+    },
+    "android": {
+      "type": "android.apk",
+      "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
+      "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd .."
+    }
+  }
 }
