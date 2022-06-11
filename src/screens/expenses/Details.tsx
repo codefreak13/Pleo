@@ -15,8 +15,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import useExpenseDetails from '../../hooks/useExpenseDetail';
 import {Expense} from '../../../api/data/expenses';
 import ViewShot from 'react-native-view-shot';
+import {ExpenseRouteProp} from '../../navigation/expense/types';
+import {useTranslation} from 'react-i18next';
 
-const ExpenseDetail = (props: any) => {
+const ExpenseDetail = ({route, navigation}: ExpenseRouteProp) => {
+  const {t} = useTranslation('details');
   const {
     expense,
     selectPhoto,
@@ -26,7 +29,7 @@ const ExpenseDetail = (props: any) => {
     takeScreenshot,
     viewShotRef,
     loading,
-  } = useExpenseDetails(props.route.params.id);
+  } = useExpenseDetails(route.params.id);
 
   const {merchant, date, amount, user, comment} = expense as Expense;
   const [editComment, setEditCommet] = useState(comment);
@@ -42,12 +45,12 @@ const ExpenseDetail = (props: any) => {
   return (
     <>
       <Header
-        title="Expense Details"
+        title={t('title')}
         customMiddleIcon
         leftButton={{
           child: <FontAwesome name="arrow-left" size={16} />,
           onclick: () => {
-            props.navigation.goBack();
+            navigation.goBack();
           },
         }}
         rightButton={{
@@ -65,36 +68,42 @@ const ExpenseDetail = (props: any) => {
         <ViewShot
           ref={viewShotRef}
           options={{format: 'jpg', quality: 0.9}}
-          style={{
-            backgroundColor: COLORS.White,
-          }}>
-          <SectionText title="Merchant">{merchant}</SectionText>
-          <SectionText title="Employee Name">{`${first} ${last}`}</SectionText>
-          <SectionText title="Employee Email">{email}</SectionText>
-          <SectionText title="Date">
+          style={styles.viewShot}>
+          <SectionText title={t('merchant')}>{merchant}</SectionText>
+          <SectionText
+            title={t('employee_name')}>{`${first} ${last}`}</SectionText>
+          <SectionText testID="employee" title={t('employee_email')}>
+            {email}
+          </SectionText>
+          <SectionText title={t('date')}>
             {formatDate.formatByDayMonthAndYear(date)}
           </SectionText>
-          <SectionText title="Amount">{`${amount.value} ${amount.currency}`}</SectionText>
+          <SectionText
+            title={t(
+              'amount',
+            )}>{`${amount.value} ${amount.currency}`}</SectionText>
 
           <Input
             value={editComment}
             setValue={setEditCommet}
             customstyle={styles.inputStyle}
             multiline={true}
-            placeholder="Add Comment"
+            placeholder={`${t('add')} ${t('comment')}`}
             numberOfLines={3}
-            // testID="inputText"
+            testID="commentInput"
           />
           <Button
+            testID="commentButton"
             customstyle={styles.buttonStyle}
             onPress={() => {
               addComment(editComment);
             }}
-            title={`${comment ? 'Update' : 'Add'} Comment`}
+            title={`${comment ? t('update') : t('add')} ${t('comment')}`}
             textStyle={styles.buttonTextStyle}
+            disabled={!comment}
           />
 
-          <UploadImage expense={expense as Expense} onPress={selectPhoto} />
+          <UploadImage expense={expense as Expense} selectPhoto={selectPhoto} />
         </ViewShot>
         {loading && <LoadingIcon />}
       </ScrollView>
@@ -109,6 +118,9 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: RFValue(10),
     paddingHorizontal: RFValue(10),
+  },
+  viewShot: {
+    backgroundColor: COLORS.White,
   },
   inputStyle: {
     borderColor: COLORS.Grey,

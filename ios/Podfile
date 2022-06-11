@@ -21,6 +21,8 @@ target 'Pleo' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
+
   target 'PleoTests' do
     inherit! :complete
     # Pods for testing

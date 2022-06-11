@@ -1,6 +1,6 @@
 {
   "testRunner": "jest",
-  "runnerConfig": "e2e/config.json",
+  "runnerConfig": "./src/e2e/config.json",
   "behaviour": {
     "init": {
       "reinstallApp": true,

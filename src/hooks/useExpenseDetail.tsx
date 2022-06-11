@@ -26,7 +26,7 @@ const useExpenseDetails = (expenseID: string) => {
     '-',
   );
 
-  const selectPhoto = async (id: string, type: string) => {
+  const selectPhoto = async (type: string) => {
     const libraryOptions: Parameters<typeof launchImageLibrary>[0] = {
       mediaType: 'photo',
     };

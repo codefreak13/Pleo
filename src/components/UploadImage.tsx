@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import ReceiptModal from './ReceiptModal';
 import {DEVICE_WIDTH, SLIDER_WIDTH, ITEM_WIDTH} from '../styles/utils';
@@ -8,17 +8,16 @@ import useUploadImage from '../hooks/useUploadImage';
 import {Expense} from '../../api/data/expenses';
 import {COLORS} from '../styles';
 import CarouselCardItem from './Carousel';
-import {useSelector} from 'react-redux';
 
 type UploadProps = {
   expense: Expense;
-  onPress: (id: string, type: string) => void;
+  selectPhoto: (type: string) => void;
 };
 
 const UploadImage = (Props: UploadProps) => {
   const {
-    expense: {id, receipts},
-    onPress,
+    expense: {receipts},
+    selectPhoto,
   } = Props;
   const {
     index,
@@ -37,7 +36,7 @@ const UploadImage = (Props: UploadProps) => {
   }, [type]);
 
   const imageUpload = () => {
-    onPress(id, type);
+    selectPhoto(type);
   };
 
   return (
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
   carouselIcon_1: {
     width: RFValue(18),
     height: RFValue(5),
-    backgroundColor: 'blue',
+    backgroundColor: COLORS.DarkGrey,
     borderRadius: RFValue(5),
   },
   carouselIcon_2: {

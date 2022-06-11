@@ -1,0 +1,16 @@
+{
+  "list": {
+    "title": "Kosten-Tracker"
+  },
+  "details": {
+    "title": "Kostendetails",
+    "merchant": "Händler",
+    "employee_name": "Mitarbeitername",
+    "date": "Datum",
+    "employee_email": "Mitarbeiter-E-Mail",
+    "amount": "Menge",
+    "comment": "Kommentar",
+    "add": "hinzufügen",
+    "update": "Aktualisieren"
+  }
+}

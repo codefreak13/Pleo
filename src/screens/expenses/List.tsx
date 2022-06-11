@@ -1,24 +1,28 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {BoldText, Header} from '../../components';
+import {Header} from '../../components';
 import {ExpenseListView} from '../../components';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {
   ExpenseStackParamList,
   EXPENSE_ROUTES,
 } from '../../navigation/expense/types';
-import {Expense} from '../../../api/data/expenses';
 import useExpenses from '../../hooks/useExpenses';
-
-export type ExpenseDataProps = Expense;
+import {useTranslation} from 'react-i18next';
 
 const ExpenseList = () => {
   const {navigate} = useNavigation<NavigationProp<ExpenseStackParamList>>();
   const {expenses, getMore} = useExpenses();
+  const {t} = useTranslation('list');
+
   return (
     <View style={styles.mainStyle}>
-      <Header title="PLEO EXPENSE TRACKER" customMiddleIcon testID="title" />
+      <Header
+        title={`PLEO ${t('title').toLocaleUpperCase()}`}
+        customMiddleIcon
+        testID="title"
+      />
       <ExpenseListView
         expenses={expenses}
         onPress={item => {

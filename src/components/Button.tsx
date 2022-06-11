@@ -31,8 +31,11 @@ const Button = (Props: ButtonProps) => {
       onPress={onPress}
       disabled={disabled}
       {...rest}>
-      <MediumText customstyle={textStyle}>{title}</MediumText>
-      {children}
+      {title ? (
+        <MediumText customstyle={textStyle}>{title}</MediumText>
+      ) : (
+        children
+      )}
     </Pressable>
   );
 };

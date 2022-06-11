@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TextStyle} from 'react-native';
+import {StyleSheet, TextStyle} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {COLORS} from '../../styles';
 import {MediumText, RegularText} from './Text';
@@ -8,15 +8,18 @@ type TextProps = {
   title?: string;
   children?: string;
   customstyle?: TextStyle;
+  testID?: string;
 };
 
 const SectionText = (Props: TextProps) => {
-  const {title, children} = Props;
+  const {title, children, testID} = Props;
 
   return (
     <>
       <RegularText customstyle={styles.title}>{title}</RegularText>
-      <MediumText>{children}</MediumText>
+      <MediumText testID={testID} customstyle={styles.description}>
+        {children}
+      </MediumText>
     </>
   );
 };
@@ -29,5 +32,8 @@ const styles = StyleSheet.create({
     marginBottom: RFValue(5),
     marginTop: RFValue(7),
     backgroundColor: COLORS.Grey,
+  },
+  description: {
+    marginBottom: RFValue(15),
   },
 });

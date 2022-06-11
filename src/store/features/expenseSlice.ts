@@ -1,12 +1,11 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {ExpenseDataProps} from '../../screens/expenses/List';
 import api from '../../api';
 import {Expense} from '../../../api/data/expenses';
 import {AppDispatch} from '..';
 import {toggleLoading} from './loadingSlice';
 
 type ExpenseInitialState = {
-  expenses: ExpenseDataProps[];
+  expenses: Expense[];
 };
 
 const initialState: ExpenseInitialState = {

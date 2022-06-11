@@ -2,13 +2,13 @@ import React from 'react';
 import {View, SectionList, StyleSheet} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import ExpenseListItem from './ExpenseListItem';
-import {ExpenseDataProps} from '../screens/expenses/List';
 import {formatData} from '../utils';
 import {MediumText, BoldText} from './text/Text';
+import {Expense} from '../../api/data/expenses';
 
 type ExpenseListViewProps = {
-  expenses: ExpenseDataProps[];
-  onPress: (item: ExpenseDataProps) => void;
+  expenses: Expense[];
+  onPress: (item: Expense) => void;
   loadMore: () => void;
 };
 
@@ -16,6 +16,7 @@ const ExpenseListView = (props: ExpenseListViewProps) => {
   const {expenses, onPress} = props;
   return (
     <SectionList
+      testID="expenseList"
       style={styles.listStyle}
       keyExtractor={(item, index) => item.date + index}
       showsVerticalScrollIndicator={false}

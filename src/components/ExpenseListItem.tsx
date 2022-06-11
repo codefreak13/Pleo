@@ -1,13 +1,14 @@
 import React from 'react';
-import {View, Pressable, StyleSheet, Platform} from 'react-native';
+import {View, StyleSheet, Platform} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {BoldText, RegularText} from './text/Text';
-import {ExpenseDataProps} from '../screens/expenses/List';
 import {COLORS} from '../styles';
+import Button from './Button';
+import {Expense} from '../../api/data/expenses';
 
 type ExpenseListItemProps = {
   onPress: () => void;
-} & ExpenseDataProps;
+} & Expense;
 
 const ExpenseListItem = (props: ExpenseListItemProps) => {
   const {
@@ -18,10 +19,10 @@ const ExpenseListItem = (props: ExpenseListItemProps) => {
   } = props;
 
   return (
-    <Pressable
-      style={styles.mainStyle}
+    <Button
+      customstyle={styles.mainStyle}
       onPress={() => onPress()}
-      testID={'listItem'}>
+      testID="expenseItem">
       <View style={styles.detailContainerStyle}>
         <View style={styles.detailViewStyle}>
           <BoldText customstyle={styles.merchantStyle}>{merchant}</BoldText>
@@ -29,7 +30,7 @@ const ExpenseListItem = (props: ExpenseListItemProps) => {
         </View>
       </View>
       <RegularText>{`${value} ${currency}`}</RegularText>
-    </Pressable>
+    </Button>
   );
 };
 

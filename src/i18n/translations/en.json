@@ -1,0 +1,16 @@
+{
+  "list": {
+    "title": "expense tracker"
+  },
+  "details": {
+    "title": "Expense Details",
+    "merchant": "Merchant",
+    "employee_name": "Employee Name",
+    "date": "Date",
+    "employee_email": "Employee Email",
+    "amount": "Amount",
+    "comment": "Comment",
+    "add": "Add",
+    "update": "Update"
+  }
+}
